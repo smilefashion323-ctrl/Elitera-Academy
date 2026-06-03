@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Elitera Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --dark: #ffffff;
+      --dark-2: #f0f0f0;
+      --off-white: #1a1a2e;
+      --muted: #444455;
+      --blue: #1a1a8c;
+      --blue-light: #dce8ff;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-2);
+      color: var(--off-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 5vw;
+    }
+
+    /* TOP BACK NAVIGATION LINK */
+    .top-nav {
+      width: 100%;
+      max-width: 450px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .btn-back-main {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 500;
+      transition: opacity 0.25s;
+    }
+    .btn-back-main:hover {
+      opacity: 0.7;
+    }
+
+    /* AUTH CARD */
+    .auth-container {
+      background: var(--dark);
+      border: 1px solid rgba(26,26,140,0.12);
+      border-top: 4px solid var(--blue);
+      width: 100%;
+      max-width: 450px;
+      padding: 3rem 2.5rem;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(26,26,140,0.04);
+    }
+
+    /* DECORATIVE CORNERS */
+    .corner {
+      position: absolute;
+      width: 16px; height: 16px;
+      border-color: var(--blue);
+      border-style: solid;
+      opacity: 0.6;
+    }
+    .corner.tl { top: 15px; left: 15px; border-width: 1px 0 0 1px; }
+    .corner.tr { top: 15px; right: 15px; border-width: 1px 1px 0 0; }
+    .corner.bl { bottom: 15px; left: 15px; border-width: 0 0 1px 1px; }
+    .corner.br { bottom: 15px; right: 15px; border-width: 0 1px 1px 0; }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .logo span { color: var(--off-white); font-weight: 300; }
+    
+    .brand-header p {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ROLE TOGGLE SWITCH */
+    .role-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--dark-2);
+      padding: 4px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(26,26,140,0.08);
+    }
+    .role-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .role-btn.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+    label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      padding: 0.8rem 1rem;
+      background: #fdfdfd;
+      border: 1px solid rgba(26,26,140,0.2);
+      color: var(--off-white);
+      transition: border-color 0.25s, background 0.25s;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--blue);
+      background: #fff;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .remember-me input { width: auto; cursor: pointer; }
+    
+    .forgot-link {
+      font-size: 0.75rem;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .btn-submit {
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 1rem;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-submit:hover {
+      background: transparent;
+      color: var(--blue);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .auth-footer a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .auth-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- GO BACK BUTTON CONTAINER -->
+  <div class="top-nav">
+    <a href="Elitra.html" class="btn-back-main">← Back to Academy</a>
+  </div>
+
+  <div class="auth-container">
+    <!-- Decorative Accents -->
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+
+    <div class="brand-header">
+      <a href="Elitra.html" class="logo">Elitera<span> Academy</span></a>
+      <p id="portal-subtitle">Student Portal Login</p>
+    </div>
+
+    <!-- Interface Role Toggle -->
+    <div class="role-toggle">
+      <button type="button" class="role-btn active" id="btn-user" onclick="setRole('user')">Student / User</button>
+      <button type="button" class="role-btn" id="btn-admin" onclick="setRole('admin')">Administrator</button>
+    </div>
+
+    <!-- ACTION REDIRECTS TO PROFILE.HTML -->
+    <form id="loginForm" action="profile.html" method="GET">
+      <!-- Dynamic Hidden Input Tracking Role State -->
+      <input type="hidden" name="role" id="user-role" value="user">
+
+      <div class="form-group">
+        <label for="email" id="label-identity">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="name@domain.com">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="••••••••">
+      </div>
+
+      <div class="form-actions">
+        <label class="remember-me">
+          <input type="checkbox" name="remember"> Keep me signed in
+        </label>
+        <a href="forgot.html" class="forgot-link">Forgot?</a>
+      </div>
+
+      <button type="submit" class="btn-submit">Authenticate Key</button>
+    </form>
+
+    <div class="auth-footer" id="registration-notice">
+      New candidate? <a href="profile2.html">Create an Account</a>
+    </div>
+  </div>
+
+  <script>
+    function setRole(role) {
+      document.getElementById('user-role').value = role;
+      
+      const userBtn = document.getElementById('btn-user');
+      const adminBtn = document.getElementById('btn-admin');
+      const subtitle = document.getElementById('portal-subtitle');
+      const regNotice = document.getElementById('registration-notice');
+      const labelIdentity = document.getElementById('label-identity');
+
+      if (role === 'admin') {
+        userBtn.classList.remove('active');
+        adminBtn.classList.add('active');
+        subtitle.textContent = "Administrative Terminal";
+        labelIdentity.textContent = "Admin Identifier / Email";
+        regNotice.style.visibility = "hidden"; 
+      } else {
+        adminBtn.classList.remove('active');
+        userBtn.classList.add('active');
+        subtitle.textContent = "Student Portal Login";
+        labelIdentity.textContent = "Email Address";
+        regNotice.style.visibility = "visible";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Proficiency — Elitera Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #1a1a8c;
+      --blue-light: #dce8ff;
+      --blue-mid: #c8d9ff;
+      --muted: #444455;
+      --off-white: #1a1a2e;
+      --white: #ffffff;
+      --green: #1a7a4a;
+      --green-light: #d4f0e0;
+      --red: #8c1a1a;
+      --red-light: #f0d4d4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f5f7ff;
+      color: var(--off-white);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(26,26,140,0.1);
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .logo span { color: var(--off-white); font-weight: 300; }
+    .nav-back {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      transition: background 0.25s, color 0.25s;
+    }
+    .nav-back:hover { background: var(--blue); color: #fff; }
+
+    /* HERO HEADER */
+    .page-header {
+      padding: 8rem 5vw 3rem;
+      text-align: center;
+    }
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blue);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      color: var(--off-white);
+      margin-bottom: 0.8rem;
+    }
+    .page-header h1 em { font-style: italic; color: var(--blue); }
+    .page-header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+    }
+
+    /* LANGUAGE TABS */
+    .track-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0 5vw 3rem;
+    }
+    .track-tab {
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.8rem 2.5rem;
+      border: 1px solid var(--blue);
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .track-tab.active, .track-tab:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* LEVEL SELECTOR */
+    .level-selector {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0 5vw 3rem;
+      flex-wrap: wrap;
+    }
+    .level-btn {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.6rem;
+      border: 1px solid rgba(26,26,140,0.25);
+      background: var(--white);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .level-btn.active, .level-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    /* QUIZ CONTAINER */
+    .quiz-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 5vw 6rem;
+    }
+
+    /* PROGRESS */
+    .progress-bar-wrap {
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--blue-mid);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 2px;
+      width: 10%;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* QUESTION CARD */
+    .question-card {
+      background: var(--white);
+      border: 1px solid rgba(26,26,140,0.12);
+      border-top: 3px solid var(--blue);
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-number {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .q-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--off-white);
+      line-height: 1.5;
+      margin-bottom: 1.8rem;
+    }
+
+    /* OPTIONS */
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .option-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid rgba(26,26,140,0.2);
+      background: #f5f7ff;
+      color: var(--off-white);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+    .option-btn.correct {
+      background: var(--green-light) !important;
+      border-color: var(--green) !important;
+      color: var(--green) !important;
+    }
+    .option-btn.wrong {
+      background: var(--red-light) !important;
+      border-color: var(--red) !important;
+      color: var(--red) !important;
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* FEEDBACK */
+    .feedback {
+      margin-top: 1.2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      line-height: 1.6;
+      padding: 0.9rem 1.2rem;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: var(--green-light); color: var(--green); }
+    .feedback.wrong   { background: var(--red-light);   color: var(--red); }
+
+    /* NAVIGATION BUTTONS */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .btn-nav {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border: 1px solid var(--blue);
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .btn-nav:hover:not(:disabled) { background: var(--blue); color: #fff; }
+    .btn-nav:disabled { opacity: 0.3; cursor: default; }
+    .btn-nav.primary { background: var(--blue); color: #fff; }
+    .btn-nav.primary:hover:not(:disabled) { background: #2a2ab0; }
+
+    /* RESULTS */
+    .results-card {
+      background: var(--white);
+      border: 1px solid rgba(26,26,140,0.12);
+      border-top: 3px solid var(--blue);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      display: none;
+    }
+    .results-card.show { display: block; animation: fadeUp 0.5s ease forwards; }
+    .results-score {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--blue);
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .results-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .results-level {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--off-white);
+      margin-bottom: 0.5rem;
+    }
+    .results-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+    }
+    .results-breakdown {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .breakdown-item { text-align: center; }
+    .breakdown-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      display: block;
+    }
+    .breakdown-num.green { color: var(--green); }
+    .breakdown-num.red   { color: var(--red); }
+    .breakdown-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 550px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="Elitra.html" class="logo">Elitera<span> Academy</span></a>
+    <a href="Elitra.html" class="nav-back">← Back</a>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <span class="eyebrow">Assessment Center</span>
+    <h1>Language <em>Proficiency</em> Test</h1>
+    <p>Select your language module and tier system to benchmark your grammar, synthesis, and vocabulary structures.</p>
+  </div>
+
+  <!-- LANGUAGE TABS -->
+  <div class="track-tabs">
+    <button class="track-tab active" id="track-english" onclick="selectTrack('english')">🇬🇧 English</button>
+    <button class="track-tab" id="track-german" onclick="selectTrack('german')">🇩🇪 German</button>
+  </div>
+
+  <!-- LEVEL SELECTOR -->
+  <div class="level-selector">
+    <button class="level-btn active" id="level-beginner" onclick="selectLevel('beginner')">A1 / A2 (Beginner)</button>
+    <button class="level-btn" id="level-intermediate" onclick="selectLevel('intermediate')">B1 / B2 (Intermediate)</button>
+    <button class="level-btn" id="level-advanced" onclick="selectLevel('advanced')">C1 / C2 (Advanced)</button>
+  </div>
+
+  <!-- QUIZ CONTENT -->
+  <div class="quiz-wrap">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">1 / 5</span>
+    </div>
+
+    <div id="questionContainer"></div>
+    <div class="results-card" id="resultsCard"></div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn-nav" id="btnPrev" onclick="prevQuestion()" disabled>← Previous</button>
+      <button class="btn-nav primary" id="btnNext" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = {
+      english: {
+        beginner: [
+          { q: "Choose the correct sentence structure:", options: ["She do not like coffee.", "She doesn't likes coffee.", "She doesn't like coffee.", "She don't like coffee."], answer: 2 },
+          { q: "What is the past tense form of the verb 'to go'?", options: ["Gone", "Goed", "Went", "Going"], answer: 2 },
+          { q: "Identify the plural form of the word 'child':", options: ["Childs", "Children", "Childrens", "Childes"], answer: 1 },
+          { q: "Fill in the blank: 'They _____ to the park yesterday morning.'", options: ["go", "have gone", "went", "was going"], answer: 2 },
+          { q: "Choose the correct preposition: 'We plan to meet ___ 7:30 PM.'", options: ["on", "at", "in", "for"], answer: 1 }
+        ],
+        intermediate: [
+          { q: "Fill in the missing verb: 'If it rains tomorrow, we ________ the outdoor match.'", options: ["would cancel", "will cancel", "canceled", "would have canceled"], answer: 1 },
+          { q: "Which sentence correctly demonstrates the present perfect tense framework?", options: ["I have lived here since three years.", "I lived here for three years.", "I have been living here for three years.", "I am living here since three years."], answer: 2 },
+          { q: "Select the most appropriate connector: 'He completed the project on time ________ facing severe technical delays.'", options: ["despite", "although", "nevertheless", "whereas"], answer: 0 },
+          { q: "What is the correct passive form: 'The manager handles the accounts.'", options: ["The accounts are handled by the manager.", "The accounts were handled by the manager.", "The accounts are being handled by the manager.", "The accounts have been handled by the manager."], answer: 0 },
+          { q: "Choose the best phrase: 'She suggested ________ a brief recess before continuing.'", options: ["to take", "taking", "we to take", "for taking"], answer: 1 }
+        ],
+        advanced: [
+          { q: "Identify the proper inversion style for an academic register:", options: ["Seldom I have witnessed such an elegant display of data.", "Seldom have I witnessed such an elegant display of data.", "Seldom did I witnessed such an elegant display of data.", "I have seldom witnessed such an elegant display of data."], answer: 1 },
+          { q: "What semantic shade does the word 'ephemeral' denote?", options: ["Enduring and highly resilient", "Lasting for a remarkably brief duration", "Structurally deceptive or intentionally misleading", "Intricately woven or complex"], answer: 1 },
+          { q: "Which subjunctive layout is structurally immaculate?", options: ["It is crucial that the committee updates its bylaws immediately.", "It is crucial that the committee update its bylaws immediately.", "It is crucial that the committee will update its bylaws immediately.", "It is crucial that the committee would update its bylaws immediately."], answer: 1 },
+          { q: "Choose the correct idiomatic phrasal combination: 'Her arguments were completely ________ alignment with the policy frameworks.'", options: ["in structural", "out of", "in perfect with", "in accordance with"], answer: 3 },
+          { q: "Identify the grammatical error category here: 'Having ran across the courtyard, the manuscript fell into the pool.'", options: ["Dangling Modifier", "Split Infinitive", "Comma Splice", "Faulty Parallelism"], answer: 0 }
+        ]
+      },
+      german: {
+        beginner: [
+          { q: "Wie sagt man 'Good morning' auf Deutsch?", options: ["Guten Abend", "Guten Morgen", "Gute Nacht", "Hallo zusammen"], answer: 1 },
+          { q: "Welcher Artikel passt zu 'Auto'?", options: ["der", "die", "das", "den"], answer: 2 },
+          { q: "Ergänzen Sie: 'Woher ______ du?' — 'Ich komme aus Berlin.'", options: ["bist", "wohnst", "heißt", "kommst"], answer: 3 },
+          { q: "Was bedeutet 'Milch' auf Englisch?", options: ["Water", "Milk", "Juice", "Bread"], answer: 1 },
+          { q: "Wählen Sie das richtige Verb: 'Wir ______ ein neues Haus kaufen.'", options: ["wollen", "will", "wollte", "gewollt"], answer: 0 }
+        ],
+        intermediate: [
+          { q: "Welche Konjunktion passt am besten? 'Ich bleibe heute zu Hause, _______ ich erkältet bin.'", options: ["deshalb", "weil", "obwohl", "trotzdem"], answer: 1 },
+          { q: "Wie lautet das Partizip Perfekt von 'schreiben'?", options: ["geschreibt", "geschrieben", "schrieb", "geschreiben"], answer: 1 },
+          { q: "Ergänzen Sie den richtigen Fall: 'Ich helfe ______ alten Mann (m.).'", options: ["den", "dem", "des", "der"], answer: 1 },
+          { q: "Welche Satzstellung ist korrekt?", options: ["Wenn ich Zeit habe, ich gehe ins Kino.", "Wenn ich Zeit habe, gehe ich ins Kino.", "Ich gehe ins Kino, wenn ich Zeit habe gehe.", "Gehe ich ins Kino, wenn ich Zeit habe."], answer: 1 },
+          { q: "Was bedeutet die Redewendung 'Daumen drücken'?", options: ["To give up", "To keep fingers crossed", "To press hard", "To lose control"], answer: 1 }
+        ],
+        advanced: [
+          { q: "Welcher Satz verwendet das Passiv mit Modalverb im Präteritum korrekt?", options: ["Das Problem musste sofort gelöst werden.", "Das Problem hatte sofort gelöst werden müssen.", "Das Problem wurde sofort gelöst werden müssen.", "Das Problem müsste sofort gelöst worden sein."], answer: 0 },
+          { q: "Was bedeutet der Begriff 'unverzüglich' im rechtlichen oder formellen Kontext?", options: ["Zögernd und mit Vorbehalt", "Ohne schuldhaftes Zögern / sofort", "Zu einem späteren Zeitpunkt", "Ausschließlich schriftlich"], answer: 1 },
+          { q: "Ergänzen Sie die richtige Endung: 'Trotz des rechtzeitige___ Eingreifens der Feuerwehr...'", options: ["n", "s", "m", "r"], answer: 0 },
+          { q: "Welche Bedeutung hat das Wort 'ambivalent'?", options: ["Eindeutig und präzise", "Zwiespältig oder doppelwertig", "Vollkommen bedeutungslos", "Vorsichtig agierend"], answer: 1 },
+          { q: "Finden Sie das treffende Synonym für 'unterscheiden':", options: ["differenzieren", "konkretisieren", "pauschalisieren", "intensivieren"], answer: 0 }
+        ]
+      }
+    };
+
+    let currentTrack = 'english';
+    let currentLevel = 'beginner';
+    let currentIndex = 0;
+    let answered = [];
+
+    function selectTrack(track) {
+      currentTrack = track;
+      document.querySelectorAll('.track-tab').forEach((btn) => {
+        btn.classList.toggle('active', btn.id === `track-${track}`);
+      });
+      resetQuiz();
+    }
+
+    function selectLevel(level) {
+      currentLevel = level;
+      document.querySelectorAll('.level-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.id === `level-${level}`);
+      });
+      resetQuiz();
+    }
+
+    function resetQuiz() {
+      currentIndex = 0;
+      answered = [];
+      document.getElementById('resultsCard').classList.remove('show');
+      document.getElementById('questionContainer').style.display = 'block';
+      document.getElementById('quizNav').style.display = 'flex';
+      renderQuestion();
+    }
+
+    function getQuestions() {
+      return questions[currentTrack][currentLevel];
+    }
+
+    function renderQuestion() {
+      const qs = getQuestions();
+      const total = qs.length;
+      const q = qs[currentIndex];
+
+      document.getElementById('progressFill').style.width = ((currentIndex + 1) / total * 100) + '%';
+      document.getElementById('progressText').textContent = (currentIndex + 1) + ' / ' + total;
+
+      document.getElementById('btnPrev').disabled = currentIndex === 0;
+      
+      const isLast = currentIndex === total - 1;
+      const btnNext = document.getElementById('btnNext');
+      btnNext.textContent = isLast ? 'Finish ✓' : 'Next →';
+      
+      btnNext.disabled = answered[currentIndex] === undefined;
+
+      const container = document.getElementById('questionContainer');
+      container.innerHTML = `
+        <div class="question-card">
+          <span class="q-number">Question ${currentIndex + 1} of ${total}</span>
+          <div class="q-text">${q.q}</div>
+          <div class="options" id="options">
+            ${q.options.map((opt, i) => `
+              <button class="option-btn" id="opt${i}" onclick="selectAnswer(${i})">${opt}</button>
+            `).join('')}
+          </div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+
+      if (answered[currentIndex] !== undefined) {
+        restoreAnswerState(currentIndex);
+      }
+    }
+
+    function selectAnswer(optionIndex) {
+      if (answered[currentIndex] !== undefined) return;
+
+      const qs = getQuestions();
+      const correct = qs[currentIndex].answer;
+      answered[currentIndex] = optionIndex;
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('opt' + optionIndex).classList.add(optionIndex === correct ? 'correct' : 'wrong');
+      if (optionIndex !== correct) {
+        document.getElementById('opt' + correct).classList.add('correct');
+      }
+
+      const fb = document.getElementById('feedback');
+      fb.classList.add('show');
+      if (optionIndex === correct) {
+        fb.classList.add('correct');
+        fb.textContent = '✓ Correct! Core syntax matrix matching standard parameters.';
+      } else {
+        fb.classList.add('wrong');
+        fb.textContent = '✗ Incorrect. The accurate variable was: "' + qs[currentIndex].options[correct] + '"';
+      }
+
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function restoreAnswerState(index) {
+      const qs = getQuestions();
+      const correct = qs[index].answer;
+      const selected = answered[index];
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+      document.getElementById('opt' + selected).classList.add(selected === correct ? 'correct' : 'wrong');
+      if (selected !== correct) {
+        document.getElementById('opt' + correct).classList.add('correct');
+      }
+
+      const fb = document.getElementById('feedback');
+      fb.classList.add('show');
+      if (selected === correct) {
+        fb.className = 'feedback show correct';
+        fb.textContent = '✓ Correct! Core syntax matrix matching standard parameters.';
+      } else {
+        fb.className = 'feedback show wrong';
+        fb.textContent = '✗ Incorrect. The accurate variable was: "' + qs[index].options[correct] + '"';
+      }
+    }
+
+    function nextQuestion() {
+      const qs = getQuestions();
+      if (answered[currentIndex] === undefined) return;
+
+      if (currentIndex < qs.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function showResults() {
+      const qs = getQuestions();
+      let correct = 0;
+      
+      qs.forEach((q, i) => {
+        if (answered[i] === q.answer) correct++;
+      });
+      
+      const total = qs.length;
+      const pct = Math.round((correct / total) * 100);
+
+      let rankLabel, rankDesc;
+      if (pct >= 80) {
+        rankLabel = currentLevel === 'beginner' ? 'Tier II — Fluent Operational' : currentLevel === 'intermediate' ? 'Tier IV — Command Advanced' : 'Tier VI — Biliterate Expert';
+        rankDesc = 'Splendid synthesis. Your processing speed and core semantic alignment match absolute elite benchmarks.';
+      } else if (pct >= 60) {
+        rankLabel = currentLevel === 'beginner' ? 'Tier I — Functional Basic' : currentLevel === 'intermediate' ? 'Tier III — Mid-Tier Command' : 'Tier V — High Proficiency';
+        rankDesc = 'Baseline criteria achieved. Continued immersion cycles will structuralize deeper intuition frameworks.';
+      } else {
+        rankLabel = 'Syntax Disaligned';
+        rankDesc = 'Structural discrepancies identified. Re-evaluate lexicon databases and parameter constraints to refresh metrics.';
+      }
+
+      document.getElementById('questionContainer').style.display = 'none';
+      document.getElementById('quizNav').style.display = 'none';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressText').textContent = total + ' / ' + total;
+
+      const card = document.getElementById('resultsCard');
+      card.classList.add('show');
+      card.innerHTML = `
+        <div class="results-score">${pct}%</div>
+        <div class="results-label">Assessed Language Matrix</div>
+        <div class="results-level">${rankLabel}</div>
+        <p class="results-desc">${rankDesc}</p>
+        <div class="results-breakdown">
+          <div class="breakdown-item">
+            <span class="breakdown-num green">${correct}</span>
+            <span class="breakdown-tag">Passed Points</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-num red">${total - correct}</span>
+            <span class="breakdown-tag">Errors Found</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-num" style="color:var(--blue)">${total}</span>
+            <span class="breakdown-tag">Total Tested</span>
+          </div>
+        </div>
+        <button class="btn-nav primary" onclick="resetQuiz()" style="margin:0 auto;display:block">Restart Evaluation Matrix</button>
+      `;
+    }
+
+    renderQuestion();
+  </script>
+
+</body>
+</html>

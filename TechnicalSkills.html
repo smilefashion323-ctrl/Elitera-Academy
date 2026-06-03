@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Skills — Elitera Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #1a1a8c;
+      --blue-light: #dce8ff;
+      --blue-mid: #c8d9ff;
+      --muted: #444455;
+      --off-white: #1a1a2e;
+      --white: #ffffff;
+      --green: #1a7a4a;
+      --green-light: #d4f0e0;
+      --red: #8c1a1a;
+      --red-light: #f0d4d4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f5f7ff;
+      color: var(--off-white);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(26,26,140,0.1);
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .logo span { color: var(--off-white); font-weight: 300; }
+    .nav-back {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      transition: background 0.25s, color 0.25s;
+    }
+    .nav-back:hover { background: var(--blue); color: #fff; }
+
+    /* HERO HEADER */
+    .page-header {
+      padding: 8rem 5vw 3rem;
+      text-align: center;
+    }
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blue);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      color: var(--off-white);
+      margin-bottom: 0.8rem;
+    }
+    .page-header h1 em { font-style: italic; color: var(--blue); }
+    .page-header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+    }
+
+    /* TRACK TABS */
+    .track-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0 5vw 3rem;
+    }
+    .track-tab {
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.8rem 2.5rem;
+      border: 1px solid var(--blue);
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .track-tab.active, .track-tab:hover {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* LEVEL SELECTOR */
+    .level-selector {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0 5vw 3rem;
+      flex-wrap: wrap;
+    }
+    .level-btn {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.6rem;
+      border: 1px solid rgba(26,26,140,0.25);
+      background: var(--white);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .level-btn.active, .level-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    /* QUIZ CONTAINER */
+    .quiz-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 5vw 6rem;
+    }
+
+    /* PROGRESS */
+    .progress-bar-wrap {
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--blue-mid);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 2px;
+      width: 10%;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* QUESTION CARD */
+    .question-card {
+      background: var(--white);
+      border: 1px solid rgba(26,26,140,0.12);
+      border-top: 3px solid var(--blue);
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-number {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .q-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--off-white);
+      line-height: 1.5;
+      margin-bottom: 1.8rem;
+    }
+
+    /* OPTIONS */
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .option-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid rgba(26,26,140,0.2);
+      background: #f5f7ff;
+      color: var(--off-white);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+    .option-btn.correct {
+      background: var(--green-light) !important;
+      border-color: var(--green) !important;
+      color: var(--green) !important;
+    }
+    .option-btn.wrong {
+      background: var(--red-light) !important;
+      border-color: var(--red) !important;
+      color: var(--red) !important;
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* FEEDBACK */
+    .feedback {
+      margin-top: 1.2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      line-height: 1.6;
+      padding: 0.9rem 1.2rem;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: var(--green-light); color: var(--green); }
+    .feedback.wrong   { background: var(--red-light);   color: var(--red); }
+
+    /* NAVIGATION BUTTONS */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .btn-nav {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border: 1px solid var(--blue);
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .btn-nav:hover:not(:disabled) { background: var(--blue); color: #fff; }
+    .btn-nav:disabled { opacity: 0.3; cursor: default; }
+    .btn-nav.primary { background: var(--blue); color: #fff; }
+    .btn-nav.primary:hover:not(:disabled) { background: #2a2ab0; }
+
+    /* RESULTS */
+    .results-card {
+      background: var(--white);
+      border: 1px solid rgba(26,26,140,0.12);
+      border-top: 3px solid var(--blue);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      display: none;
+    }
+    .results-card.show { display: block; animation: fadeUp 0.5s ease forwards; }
+    .results-score {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--blue);
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .results-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .results-level {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--off-white);
+      margin-bottom: 0.5rem;
+    }
+    .results-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+    }
+    .results-breakdown {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .breakdown-item { text-align: center; }
+    .breakdown-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      display: block;
+    }
+    .breakdown-num.green { color: var(--green); }
+    .breakdown-num.red   { color: var(--red); }
+    .breakdown-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 550px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="Elitra.html" class="logo">Elitera<span> Academy</span></a>
+    <a href="Elitra.html" class="nav-back">← Back</a>
+  </nav>
+
+  <div class="page-header">
+    <span class="eyebrow">Assessment Center</span>
+    <h1>Technical <em>Skills</em> Test</h1>
+    <p>Choose your skill discipline and level, then answer all questions to check your current rank.</p>
+  </div>
+
+  <div class="track-tabs">
+    <button class="track-tab active" id="track-editing" onclick="selectTrack('editing')">🎬 Video Editing</button>
+    <button class="track-tab" id="track-photoshop" onclick="selectTrack('photoshop')">🎨 Photoshop</button>
+  </div>
+
+  <div class="level-selector">
+    <button class="level-btn active" id="level-beginner" onclick="selectLevel('beginner')">Beginner</button>
+    <button class="level-btn" id="level-intermediate" onclick="selectLevel('intermediate')">Intermediate</button>
+    <button class="level-btn" id="level-advanced" onclick="selectLevel('advanced')">Advanced</button>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">1 / 5</span>
+    </div>
+
+    <div id="questionContainer"></div>
+    <div class="results-card" id="resultsCard"></div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn-nav" id="btnPrev" onclick="prevQuestion()" disabled>← Previous</button>
+      <button class="btn-nav primary" id="btnNext" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = {
+      editing: {
+        beginner: [
+          { q: "What does the 'Frame Rate' (FPS) of a video project represent?", options: ["The structural size of pixels", "Frames Per Second shown on playback", "The internal file audio compression speed", "The export rendering rendering time"], answer: 1 },
+          { q: "Which tool is standard across timelines to split an active layer or clip?", options: ["Pen Tool", "Hand Tool", "Razor / Cut Tool", "Zoom Tool"], answer: 2 },
+          { q: "What is a Jump Cut?", options: ["An abrupt change between sequential shots within a scene", "A deliberate cross-dissolve to black", "An ultra-smooth transition tracking movement", "A multi-camera panning shot"], answer: 0 },
+          { q: "What color format is traditionally generated for digital screen displays?", options: ["CMYK", "Pantone Spectrum", "Grayscale Matte", "RGB"], answer: 3 },
+          { q: "What is B-Roll content?", options: ["The primary interview vocal audio files", "Supplemental or alternative footage cut with main shots", "Unusable corrupt raw backup data", "The ultimate master render profile export"], answer: 1 }
+        ],
+        intermediate: [
+          { q: "What is the primary function of a LUT in post-production pipelines?", options: ["Limiting excessive track channels", "Applying quick preset calculation points for color grading", "Synchronizing audio sample rates automatically", "Looping complex layout assets seamlessly"], answer: 1 },
+          { q: "Which format contains completely uncompressed visual information directly from camera sensors?", options: ["MP4 H.264", "RAW", "MOV ProRes Proxy", "ProRes 422 HQ"], answer: 1 },
+          { q: "What does 'J-Cut' mean in timeline pacing?", options: ["Audio of the next clip plays before the video changes", "Video changes ahead of the subsequent audio layer", "The video track is fast forwarded by exactly two frames", "Tracks jump down to lower index positions"], answer: 0 },
+          { q: "What calculation method avoids visual interpolation artifacts on mixed project speeds?", options: ["Optical Flow", "Linear Dissolve Blur", "Pixel Aspect Masking", "Raster Clipping Matrix"], answer: 0 },
+          { q: "Why are proxy files utilized during timeline workflows?", options: ["To preserve absolute maximum resolution metrics", "To reduce processor overhead via lower-res edit copies", "To embed complex multichannel spatial audio structures", "To apply alpha masks onto rendering pipelines"], answer: 1 }
+        ],
+        advanced: [
+          { q: "In modern workflows, what does a Logarithmic (Log) profile fundamentally maximize?", options: ["Audio frequency ceilings", "Dynamic range retention across highlights and shadows", "GPU background render processing speeds", "Interframe compression algorithm thresholds"], answer: 1 },
+          { q: "What differentiates Intra-frame compression from Inter-frame compression?", options: ["Intra-frame compresses each standalone frame individually", "Inter-frame entirely omits audio track metadata fields", "Intra-frame references data across neighboring clip sets", "Inter-frame structures color strictly with vector spaces"], answer: 0 },
+          { q: "Which mechanism maintains continuous structural accuracy when sharing metadata across professional setups?", options: ["Audio Sample Mapping", "Timecode (SMPTE format)", "Dynamic Bitrate Allocations", "Chroma Subsampling Blocks"], answer: 1 },
+          { q: "What visual artifact occurs if high frequency detailed patterns exceed grid layouts?", options: ["Moiré Pattern Distortion", "Linear Clipping Artifact", "Chrominance Phase Drift", "Rolling Shutter Skew"], answer: 0 },
+          { q: "What spatial configuration characterizes a 4:2:2 chroma subsampling ratio?", options: ["Luminance is cut in half horizontally", "Chrominance channels are sampled at half the rate of luminance", "Color information is omitted entirely across frame arrays", "Pixel grids maintain strict square dimension scaling matrices"], answer: 1 }
+        ]
+      },
+      photoshop: {
+        beginner: [
+          { q: "Which tool allows you to sample pixels from one area of an image and paint them over another?", options: ["Gradient Tool", "Clone Stamp Tool", "Magic Wand Tool", "Paint Bucket Tool"], answer: 1 },
+          { q: "What type of layer adjustment allows modifications without permanently altering the original image pixels?", options: ["Raster Layering", "Destructive Layering", "Non-Destructive Adjustment Layer", "Flattening Layer Selection"], answer: 2 },
+          { q: "What is the native file extension format saved natively by Adobe Photoshop?", options: [".PNG", ".PSD", ".JPEG", ".TIFF"], answer: 1 },
+          { q: "How do you temporarily change the canvas view panning layout with the keyboard?", options: ["Holding the Spacebar", "Pressing the Escape Key", "Holding Shift + Alt keys", "Tapping Tab repetitively"], answer: 0 },
+          { q: "What happens when you paint with black on a Layer Mask?", options: ["It adds a darker shadow layer effect", "It completely hides that portion of the active layer", "It permanently erases the vector structural path", "It duplicates the target color space parameters"], answer: 1 }
+        ],
+        intermediate: [
+          { q: "What is the primary difference between a Vector Shape and a Rasterized Graphic?", options: ["Vector graphics pixelate aggressively when magnified", "Vector graphics scale cleanly at any resolution via math paths", "Raster graphics have smaller storage footprints invariably", "Raster graphics cannot hold opacity channel matrices"], answer: 1 },
+          { q: "Which blending mode category suppresses highlights to prioritize underlying dark pixel structures?", options: ["Screen group", "Multiply / Darken group", "Overlay group", "Difference group"], answer: 1 },
+          { q: "What is a 'Smart Object' layer feature?", options: ["An automatic localized color correction filter element", "A protective container preserving source vector/raster properties", "A script checking configuration compatibility metrics", "A layout locked path parameter structure"], answer: 1 },
+          { q: "Which color space mode is standard for physical commercial printing presses?", options: ["sRGB Profile", "ProPhoto Space", "Adobe RGB 1998", "CMYK Mode"], answer: 3 },
+          { q: "What does the 'Tolerance' configuration alter on the Magic Wand selection tool?", options: ["The precise physical cursor rendering footprint sizing", "The range of color variance values selected at the click point", "The processing hardware rendering allocation capacity", "The structural feathering sharpness ratio metrics"], answer: 1 }
+        ],
+        advanced: [
+          { q: "What separation technique isolates structural textures from underlying color values during skin retouching?", options: ["High Dynamic Range Mapping", "Channel Mixer Calibration Layout", "Frequency Separation using Gaussian Blur & High Pass", "Content-Aware Vector Blending"], answer: 2 },
+          { q: "In 16-bit color channels, how many discrete values exist per color channel?", options: ["256 values", "16,384 values", "65,536 values", "1,024 values"], answer: 2 },
+          { q: "What mapping mechanism converts spatial color spaces safely across unaligned profile scopes?", options: ["Rendering Intents (Perceptual / Relative)", "Bit Depth Clipping Limits", "Alpha Channel Contrast Inversion Matrix", "Dithering Algorithm Quantization Paths"], answer: 0 },
+          { q: "What does adjusting the 'Offset' control inside the High Pass structural filter layer do?", options: ["Inverts color components uniformly across color masks", "Shifts the output anchor baseline luminance values", "Blurs edge alignment profiles systematically", "Scales the document coordinates mathematically"], answer: 1 },
+          { q: "When working in 32-bit HDR color, what core configuration parameter becomes unlocked across exposure workflows?", options: ["Floating-point calculation arrays", "Indexed color lookup array tables", "Vector path alignment snapping tools", "Alpha mask geometric constraints"], answer: 0 }
+        ]
+      }
+    };
+
+    let currentTrack = 'editing';
+    let currentLevel = 'beginner';
+    let currentIndex = 0;
+    let answered = [];
+
+    function selectTrack(track) {
+      currentTrack = track;
+      document.querySelectorAll('.track-tab').forEach((btn) => {
+        btn.classList.toggle('active', btn.id === `track-${track}`);
+      });
+      resetQuiz();
+    }
+
+    function selectLevel(level) {
+      currentLevel = level;
+      document.querySelectorAll('.level-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.id === `level-${level}`);
+      });
+      resetQuiz();
+    }
+
+    function resetQuiz() {
+      currentIndex = 0;
+      answered = [];
+      document.getElementById('resultsCard').classList.remove('show');
+      document.getElementById('questionContainer').style.display = 'block';
+      document.getElementById('quizNav').style.display = 'flex';
+      renderQuestion();
+    }
+
+    function getQuestions() {
+      return questions[currentTrack][currentLevel];
+    }
+
+    function renderQuestion() {
+      const qs = getQuestions();
+      const total = qs.length;
+      const q = qs[currentIndex];
+
+      document.getElementById('progressFill').style.width = ((currentIndex + 1) / total * 100) + '%';
+      document.getElementById('progressText').textContent = (currentIndex + 1) + ' / ' + total;
+
+      document.getElementById('btnPrev').disabled = currentIndex === 0;
+      
+      const isLast = currentIndex === total - 1;
+      const btnNext = document.getElementById('btnNext');
+      btnNext.textContent = isLast ? 'Finish ✓' : 'Next →';
+      
+      btnNext.disabled = answered[currentIndex] === undefined;
+
+      const container = document.getElementById('questionContainer');
+      container.innerHTML = `
+        <div class="question-card">
+          <span class="q-number">Question ${currentIndex + 1} of ${total}</span>
+          <div class="q-text">${q.q}</div>
+          <div class="options" id="options">
+            ${q.options.map((opt, i) => `
+              <button class="option-btn" id="opt${i}" onclick="selectAnswer(${i})">${opt}</button>
+            `).join('')}
+          </div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+
+      if (answered[currentIndex] !== undefined) {
+        restoreAnswerState(currentIndex);
+      }
+    }
+
+    function selectAnswer(optionIndex) {
+      if (answered[currentIndex] !== undefined) return;
+
+      const qs = getQuestions();
+      const correct = qs[currentIndex].answer;
+      answered[currentIndex] = optionIndex;
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+      document.getElementById('opt' + optionIndex).classList.add(optionIndex === correct ? 'correct' : 'wrong');
+      if (optionIndex !== correct) {
+        document.getElementById('opt' + correct).classList.add('correct');
+      }
+
+      const fb = document.getElementById('feedback');
+      fb.classList.add('show');
+      if (optionIndex === correct) {
+        fb.classList.add('correct');
+        fb.textContent = '✓ Correct! Skill milestone verified.';
+      } else {
+        fb.classList.add('wrong');
+        fb.textContent = '✗ Incorrect. The proper reference was: "' + qs[currentIndex].options[correct] + '"';
+      }
+
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function restoreAnswerState(index) {
+      const qs = getQuestions();
+      const correct = qs[index].answer;
+      const selected = answered[index];
+
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+      document.getElementById('opt' + selected).classList.add(selected === correct ? 'correct' : 'wrong');
+      if (selected !== correct) {
+        document.getElementById('opt' + correct).classList.add('correct');
+      }
+
+      const fb = document.getElementById('feedback');
+      fb.classList.add('show');
+      if (selected === correct) {
+        fb.className = 'feedback show correct';
+        fb.textContent = '✓ Correct! Skill milestone verified.';
+      } else {
+        fb.className = 'feedback show wrong';
+        fb.textContent = '✗ Incorrect. The proper reference was: "' + qs[index].options[correct] + '"';
+      }
+    }
+
+    function nextQuestion() {
+      const qs = getQuestions();
+      if (answered[currentIndex] === undefined) return;
+
+      if (currentIndex < qs.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    function showResults() {
+      const qs = getQuestions();
+      let correct = 0;
+      
+      qs.forEach((q, i) => {
+        if (answered[i] === q.answer) correct++;
+      });
+      
+      const total = qs.length;
+      const pct = Math.round((correct / total) * 100);
+
+      let rankLabel, rankDesc;
+      if (pct >= 80) {
+        rankLabel = currentLevel === 'beginner' ? 'Tier II — Core Competent' : currentLevel === 'intermediate' ? 'Tier IV — Professional Certified' : 'Tier VI — Master Expert';
+        rankDesc = 'Outstanding accuracy. Your conceptual knowledge matching this technological tier is highly advanced.';
+      } else if (pct >= 60) {
+        rankLabel = currentLevel === 'beginner' ? 'Tier I — Apprentice' : currentLevel === 'intermediate' ? 'Tier III — Practitioner' : 'Tier V — Elite Advanced';
+        rankDesc = 'Passing score achieved. Consistent practical application will solidify this rank domain.';
+      } else {
+        rankLabel = 'Evaluation Conditional';
+        rankDesc = 'Score matrix requires revision. Reassess foundational elements and test configuration parameters again.';
+      }
+
+      document.getElementById('questionContainer').style.display = 'none';
+      document.getElementById('quizNav').style.display = 'none';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressText').textContent = total + ' / ' + total;
+
+      const card = document.getElementById('resultsCard');
+      card.classList.add('show');
+      card.innerHTML = `
+        <div class="results-score">${pct}%</div>
+        <div class="results-label">Assessed Competency Matrix</div>
+        <div class="results-level">${rankLabel}</div>
+        <p class="results-desc">${rankDesc}</p>
+        <div class="results-breakdown">
+          <div class="breakdown-item">
+            <span class="breakdown-num green">${correct}</span>
+            <span class="breakdown-tag">Passed Points</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-num red">${total - correct}</span>
+            <span class="breakdown-tag">Errors Found</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-num" style="color:var(--blue)">${total}</span>
+            <span class="breakdown-tag">Total Tested</span>
+          </div>
+        </div>
+        <button class="btn-nav primary" onclick="resetQuiz()" style="margin:0 auto;display:block">Restart Assessment Matrix</button>
+      `;
+    }
+
+    renderQuestion();
+  </script>
+
+</body>
+</html>
